@@ -30,7 +30,9 @@ tailwind.config = {
 
 
 <style>
-* { cursor: none !important; }
+ @media (min-width: 1024px) {
+  
+}
 body { overflow-x: hidden; }
 
 .cursor-dot, .cursor-ring {
@@ -229,7 +231,7 @@ class="absolute inset-0 w-full h-full object-cover opacity-70">
 <section class="px-6 lg:px-16 py-20 bg-white">
 
   <!-- TITLE -->
-  <div class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+  <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6"></div>
   
   <!-- LEFT SIDE (HEADINGS) -->
   <div class="text-left">
@@ -470,8 +472,8 @@ class="absolute inset-0 w-full h-full object-cover opacity-70">
     <!-- PRODUCT 4 -->
     <div class="group overflow-hidden">
       <div class="relative overflow-hidden">
-        <img src="https://i.postimg.cc/0Nq0jzYH/download-(82).jpg" alt="shawarma">
-          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+      <img src="https://i.postimg.cc/0Nq0jzYH/download-(82).jpg"
+class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">  
 
         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
           <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
@@ -498,8 +500,8 @@ class="absolute inset-0 w-full h-full object-cover opacity-70">
     <!-- PRODUCT 5 -->
     <div class="group overflow-hidden">
       <div class="relative overflow-hidden">
-        <img src="https://i.postimg.cc/Y23ryZDY/Pizza-Burger-Recipe.jpg" alt="burger">
-          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+        <img src="https://i.postimg.cc/T39r9gK1/Pizza-Burger-Recipe.jpg" 
+         class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
 
         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
           <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
@@ -554,9 +556,8 @@ class="absolute inset-0 w-full h-full object-cover opacity-70">
     <!-- PRODUCT 7 -->
     <div class="group overflow-hidden">
       <div class="relative overflow-hidden">
-        <img src="https://i.postimg.cc/vT3XJbCt/recette-de-donuts-fourres-a-la-confiture-pour-6-personne.jpg" alt="">
-          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
-
+       <img src="https://i.postimg.cc/wjTt9PjC/recette-de-donuts-fourres-a-la-confiture-pour-6-personne.jpg" 
+       class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
           <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
           <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
@@ -830,11 +831,12 @@ const ring = document.getElementById("ring");
 
 let x=0,y=0,rx=0,ry=0;
 
-window.addEventListener("mousemove",(e)=>{
-x=e.clientX;y=e.clientY;
-dot.style.left=x+"px";
-dot.style.top=y+"px";
-});
+if (window.innerWidth > 1024) {
+  window.addEventListener("mousemove", (e) => {
+    x = e.clientX;
+    y = e.clientY;
+  });
+}
 
 function animate(){
 rx+=(x-rx)*0.15;
