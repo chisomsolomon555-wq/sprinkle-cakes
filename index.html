@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPRINKLE</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        serif: ['Cormorant Garamond', 'serif'],
+        sans: ['Inter', 'sans-serif'],
+      },
+      colors: {
+        noir:'#0a0a0a',
+        gold:'#9CA763',
+        matcha:'#200F07',
+      }
+    }
+  }
+}
+</script>
+
+
+<style>
+* { cursor: none !important; }
+body { overflow-x: hidden; }
+
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  background: #9CA763;
+}
+
+.cursor-ring {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #9CA763;
+}
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: #9CA763;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: 0.4s;
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+/* COLLECTION FIX */
+.accordion-item {
+  transition: all 0.5s ease;
+}
+
+@media (min-width: 1024px) {
+  .accordion-item {
+    flex: 1;
+  }
+
+  .accordion-item:hover {
+    flex: 3;
+  }
+}
+</style>
+ 
+
+
+
+
+</head>
+
+<body class="bg-noir text-white font-sans">
+
+<!-- LOADER -->
+<div id="loader" class="fixed inset-0 bg-noir flex items-center justify-center z-[100]">
+  <h1 class="font-serif text-3xl tracking-[0.5em] text-gold animate-pulse">
+    SPRINKLE
+  </h1>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav class="fixed w-full z-50 px-6 lg:px-16 py-8 flex justify-between items-center">
+  <div class="font-serif tracking-[0.5em] text-lg">SPRINKLE</div>
+
+  <div class="hidden lg:flex gap-10 text-sm">
+    <a href="#" class="nav-link">Shop</a>
+    <a href="#" class="nav-link">Cakes</a>
+    <a href="#" class="nav-link">About</a>
+    <a href="#" class="nav-link">Fingerlicks</a>
+  </div>
+
+  <div class="flex items-center gap-6">
+    <i data-lucide="search"></i>
+    <i data-lucide="shopping-bag"></i>
+    <button onclick="toggleMenu()" class="lg:hidden">
+      <i data-lucide="menu"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobileMenu"
+class="fixed inset-0 bg-noir z-40 translate-x-full transition-transform duration-700 flex flex-col justify-center items-center">
+
+<button onclick="toggleMenu()" class="absolute top-8 right-8">
+  <i data-lucide="x"></i>
+</button>
+
+<div class="flex flex-col gap-8 text-xl">
+  <a href="#">Shop</a>
+  <a href="#">Cakes</a>
+  <a href="#">About</a>
+  <a href="#">Fingerlicks</a>
+</div>
+</div>
+
+<!-- HERO -->
+<section class="relative h-screen flex items-center justify-center text-center">
+
+<img src="https://i.postimg.cc/KzMZvd4r/Easy-Matcha-Cupcakes-with-White-Chocolate-Frosting-Recipe.jpg"
+class="absolute inset-0 w-full h-full object-cover opacity-70">
+
+<div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/90"></div>
+
+<div class="relative z-10 px-6">
+
+<p class="text-gold tracking-[0.4em] text-xs mb-6">
+  Since 1990. SPRINKLE
+</p>
+
+<h1 class="font-serif text-5xl md:text-8xl tracking-[0.2em] mb-4">
+  SPRINKLE
+</h1>
+
+<div class="mx-auto w-[200px] h-[1px] bg-gold/30 mb-6"></div>
+
+<p class="text-white/60 max-w-xl mx-auto mb-10">
+  Freshly Baked Cakes to Crispy Pastries - served fresh everyday
+</p>  
+
+ 
+<button class="group relative px-8 py-3 border border-gold text-gold overflow-hidden">
+
+<span class="block transition-transform duration-300 group-hover:-translate-y-full">
+  <span class="flex items-center gap-2">
+    Explore Now
+    <i data-lucide="arrow-down"></i>
+  </span>
+</span>
+
+<span class="absolute left-0 top-full w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-full">
+  <span class="flex items-center gap-2">
+    Explore Now
+    <i data-lucide="arrow-down"></i>
+  </span>
+</span>
+
+</button>
+
+</div>
+</section>
+
+
+
+<!-- MARQUEE -->
+<div class="bg-gold py-3 overflow-hidden">
+  <div class="flex whitespace-nowrap animate-marquee font-serif text-noir text-sm">
+    <span class="mx-8">Freshly Baked Daily</span>
+    <span class="mx-8">•</span>
+    <span class="mx-8">Same Day Delivery</span>
+    <span class="mx-8">•</span>
+    <span class="mx-8">Custom Cake Orders</span>
+    <span class="mx-8">•</span>
+    <span class="mx-8">Affordable Sweet Treats</span>
+  
+    <span class="mx-8">Freshly Baked Daily</span>
+    <span class="mx-8">•</span>
+    <span class="mx-8">Same Day Delivery</span>
+    <span class="mx-8">•</span>
+    <span class="mx-8">Custom Cake Orders</span>
+    <span class="mx-8">•</span>
+    <span class="mx-8">Affordable Sweet Treats</span>
+  </div>
+</div>
+
+
+
+
+
+<!-- ================= COLLECTION SECTION (FIXED) ================= -->
+<section class="px-6 lg:px-16 py-20 bg-white">
+
+  <!-- TITLE -->
+  <div class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+  
+  <!-- LEFT SIDE (HEADINGS) -->
+  <div class="text-left">
+    <h2 class="font-serif text-sm md:text-base uppercase mb-6 tracking-[0.35em] text-gold">
+      OUR COLLECTIONS
+    </h2>
+
+    <h3 class="font-serif text-noir text-4xl md:text-6xl leading tight mb-4">
+      Sprinkle
+      <span class="text-gold block md:inline">
+        <br class=" mt-6 hidden md:block">Varieties
+      </span>
+    </h3>
+
+    <div class="mt-5 w-24 h-[1px] bg-peach/50"></div>
+  </div>
+
+  <!-- RIGHT SIDE (TEXT) -->
+  <p class="font-serif text-sm text-noir text-left md:text-right max-w-sm">
+    Each piece is made with love and freshly baked, widely spread among people all over the world to testify our mouth watering cakes
+  </p>
+
+</div>
+
+  <!-- GRID -->
+  <div class="flex flex-col lg:flex-row gap-4 h-[70vh min-h-[600px]">
+
+    <!-- ITEM 1 -->
+    <div class="accordion-item group relative cursor-pointer overflow-hidden h-[250px] lg:h-[70vh] cursor-pointer">
+ 
+      <img src="https://i.postimg.cc/0jFBMd2d/IMG-5120.jpg"
+        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+
+      <div class="absolute inset-0 p-8 flex flex-col justify-end ">
+
+        <h3 class="font-serif text-2xl lg:text-3xl text-white mb-2">Cakes</h3>
+
+        <p class="text-white/70 text-sm mb-4 max-w-xs">
+          Soft, rich and beautifully crafted cakes.
+        </p>
+
+        <span class="inline-flex items-center gap-2 text-white text-xs tracking-widest border-b border-gold-400 pb-1">
+          View Menu
+          <i data-lucide="arrow-right" class="w-3 h-3"></i>
+        </span>
+
+      </div>
+    </div>
+
+    <!-- ITEM 2 -->
+    <div class="accordion-item group relative overflow-hidden h-[250px] lg:h-[70vh] cursor-pointer">
+
+      <img src="https://i.postimg.cc/tgrGKq5h/25-Graduation-Cupcake-Ideas-That-Celebrate-Success-in-Style.jpg"
+        class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-300"></div>
+
+      <div class="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition duration-300">
+
+        <h3 class="font-serif text-2xl lg:text-3xl text-white mb-2">Cupcakes</h3>
+
+        <p class="text-white/80 text-sm mb-3">
+          Sweet and colorful cupcakes.
+        </p>
+
+        <span class="inline-flex items-center gap-2 text-white text-xs border-b border-peach pb-1">
+          View Menu
+          <i data-lucide="arrow-right" class="w-3 h-3"></i>
+        </span>
+
+      </div>
+    </div>
+
+    <!-- ITEM 3 -->
+    <div class="accordion-item group relative overflow-hidden h-[250px] lg:h-[70vh] cursor-pointer">
+
+      <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff"
+        class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-300"></div>
+
+      <div class="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition duration-300">
+
+        <h3 class="font-serif text-2xl lg:text-3xl text-white mb-2">Pastries</h3>
+
+        <p class="text-white/80 text-sm mb-3">
+          Fresh baked pastries daily.
+        </p>
+
+        <span class="inline-flex items-center gap-2 text-white text-xs border-b border-peach pb-1">
+          View Menu
+          <i data-lucide="arrow-right" class="w-3 h-3"></i>
+        </span>
+
+      </div>
+    </div>
+
+    <!-- ITEM 4 -->
+    <div class="accordion-item group relative overflow-hidden h-[250px] lg:h-[70vh] cursor-pointer">
+
+      <img src="https://i.postimg.cc/Hk37hNr4/download-(40).jpg"
+        class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-300"></div>
+
+      <div class="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition duration-300">
+
+        <h3 class="font-serif text-2xl lg:text-3xl text-white mb-2">Donuts</h3>
+
+        <p class="text-white/80 text-sm mb-3">
+          Soft glazed donuts.
+        </p>
+
+        <span class="inline-flex items-center gap-2 text-white text-xs border-b border-peach pb-1">
+          View Menu
+          <i data-lucide="arrow-right" class="w-3 h-3"></i>
+        </span>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION for new arrivals -->
+<section class="bg-white px-4 md:px-10 lg:px-16 py-16">
+
+  <!-- TOP -->
+  <div class="mb-12">
+
+    <div class="flex items-center gap-4 mb-4">
+      <div class="w-12 h-[2px] bg-[#c9a46c]"></div>
+      <p class="uppercase tracking-[6px] text-[#c9a46c] text-sm">
+        Featured
+      </p>
+    </div>
+
+    <h1 class="text-5xl md:text-7xl font-serif mb-6 text-black">
+      New Cakes
+    </h1>
+
+    <button class="uppercase tracking-[5px] text-[#c9a46c] flex items-center gap-3 text-sm">
+      View All →
+    </button>
+
+    <div class="w-full h-[1px] bg-[#e5e5e5] mt-10"></div>
+
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+
+    <!-- PRODUCT 1 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/651r4m0n/download-(81).jpg"
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6 ">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-black  px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Sweet Yummy Parfait</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Parfait Bliss</h2>
+        <p class="text-gold text-2xl md:text-5xl">$20</p>
+
+           <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Popular
+            </p>
+          </div>
+
+        
+      </div>
+    </div>
+
+    <!-- PRODUCT 2 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/KYR6bwYD/55-Celebratory-Cupcakes-For-When-A-Layer-Cake-Seems-Like-Too-Much.jpg"
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Cupcake Espresso</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Vanilla Cupcake</h2>
+        <p class="text-gold text-2xl md:text-5xl ">$95</p>
+         <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Recently Bought
+            </p>
+          </div>
+        
+      </div>
+    </div>
+
+    <!-- PRODUCT 3 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/D0yDCMR3/Vegetable-Samosas-Recipe.jpg"
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Luxury Samosa</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Samosa Bloom</h2>
+        <p class="text-gold text-2xl md:text-5xl">$120</p>
+         <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Recently Bought
+            </p>
+          </div>
+      
+      </div>
+    </div>
+
+    <!-- PRODUCT 4 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/0Nq0jzYH/download-(82).jpg" alt="shawarma">
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Chocolate Cake</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Chocolate Delight</h2>
+        <p class="text-gold text-2xl md:text-5xl">$45</p>
+
+         <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Freshly Baked
+            </p>
+          </div>
+       
+         </div>
+    </div>
+
+    <!-- PRODUCT 5 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/Y23ryZDY/Pizza-Burger-Recipe.jpg" alt="burger">
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Premium Burger</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Jazzy Burger</h2>
+        <p class="text-gold text-2xl md:text-5xl">$15</p>
+         <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Hot This Week
+            </p>
+          </div>
+
+        
+      </div>
+    </div>
+
+    <!-- PRODUCT 6 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/nc3vZdrL/Carrot-Cake-Loaf-Pastryby-Saloni.jpg" alt="carrot cake"
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Vanilla Carrot Bliss</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Carrot Cake</h2>
+        <p class="text-gold text-2xl md:text-5xl">$38</p>
+         <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Hot This Week
+            </p>
+          </div>
+
+        </div>
+    </div>
+
+ 
+    <!-- PRODUCT 7 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/vT3XJbCt/recette-de-donuts-fourres-a-la-confiture-pour-6-personne.jpg" alt="">
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Royal Treat</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Golden Burger</h2>
+        <p class="text-gold text-2xl md:text-5xl">$20</p>
+        <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Hot This Week
+            </p>
+          </div>
+        
+      </div>
+    </div>
+
+    <!-- PRODUCT 8 -->
+    <div class="group overflow-hidden">
+      <div class="relative overflow-hidden">
+        <img src="https://i.postimg.cc/c4Pfrv7Y/Elegant-Vanilla-Cloud-Cake-Women-s-Alphabet-(1).jpg" alt="vanilla cake">
+          class="w-full h-[240px] md:h-[450px] object-cover group-hover:scale-110 duration-500">
+
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 duration-500 flex items-end justify-center gap-4 pb-6">
+          <button class="bg-white text-black px-5 py-2 uppercase text-xs tracking-[2px]">View</button>
+          <button class="bg-gold text-white px-5 py-2 uppercase text-xs tracking-[2px]">Add To Cart</button>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <p class="uppercase tracking-[4px] text-gold text-xs mb-2">Luxury Slice Cake</p>
+        <div class="text-gold mb-2">★★★★★</div>
+        <h2 class="text-xl md:text-4xl font-light mb-3 text-black">Vanilla Cake</h2>
+        <p class="text-gold text-2xl md:text-5xl">$10</p>
+
+        <div class="flex items-center gap-2">
+             <div class="w-2 h-2 rounded-full bg-[#200F07]"></div>
+            <p class="uppercase tracking-[3px] text-gray-500 text-[10px] md:text-xs">
+              Best Seller
+            </p>
+          </div>
+        
+      </div>
+    </div>
+
+  </div>
+
+</section>
+  
+    
+     
+   
+          
+
+          
+
+  
+
+   
+
+
+
+
+
+
+
+
+
+
+
+<!---menu highlight--->
+<section class="bg-white text-white py-20 px-6 lg:px-16">
+
+  <!-- HEADER -->
+  <div class="max-w-7xl mx-auto mb-12 flex justify-between items-end flex-wrap gap-4">
+    
+    <h2 class="text-gold font-serif text-3xl md:text-5xl">
+      Menu Highlights
+    </h2>
+
+    <p class="text-black/50 text-xs md:text-sm">
+      Full menu available in-store and online.
+    </p>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+
+    <!-- CARD -->
+    <div class="group relative overflow-hidden rounded-xl md:rounded-2xl h-[200px] md:h-[320px]">
+
+      <img src="https://i.postimg.cc/66L6GfbJ/70-Wedding-Cakes-Jaw-Dropping-Ideas-You-ll-Adore.jpg"
+           class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition"></div>
+
+      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6">
+        <h3 class="font-serif text-lg md:text-2xl leading-tight">
+          Wedding Cake <br> Espresso
+        </h3>
+      </div>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="group relative overflow-hidden rounded-xl md:rounded-2xl h-[200px] md:h-[320px]">
+
+      <img src="https://i.postimg.cc/tg2tT6QG/50th-Birthday-Cakes-and-Unique-Ideas-My-Happy-Birthday-Wishes.jpg"
+           class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition"></div>
+
+      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6">
+        <h3 class="font-serif text-lg md:text-2xl leading-tight">
+          Birthday  <br>Cakes
+        </h3>
+      </div>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="group relative overflow-hidden rounded-xl md:rounded-2xl h-[200px] md:h-[320px]">
+
+      <img src="https://i.postimg.cc/2yf497nC/download-(78).jpg"
+           class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition"></div>
+
+      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6">
+        <h3 class="font-serif text-lg md:text-2xl leading-tight">
+          Baby Shower <br> Cakes
+        </h3>
+      </div>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="group relative overflow-hidden rounded-xl md:rounded-2xl h-[200px] md:h-[320px]">
+
+      <img src="https://i.postimg.cc/J0mk54Wj/saved-to-valentine-s.jpg"
+           class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+
+      <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition"></div>
+
+      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6">
+        <h3 class="font-serif text-lg md:text-2xl leading-tight">
+          Anniversary <br> Cakes
+        </h3>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  
+
+
+</section>
+    
+
+
+
+
+
+<!-- =================FOOTER SECTION (FIXED) ================= -->
+<footer class="bg-white text-black pt-24 pb-12 px-8 lg:px-16 border-t border-black/5">
+
+  <div class="max-w-[1800px] mx-auto">
+
+    <!-- GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+
+      <!-- BRAND -->
+      <div>
+        <a href="#" class="text-3xl font-serif font-light tracking-[0.4em] text-black mb-8 block">
+          SPRINKLE
+        </a>
+
+        <p class="text-black/70 text-sm font-light leading-relaxed mb-8">
+          Freshly baked with love.<br>
+          Abuja, Nigeria<br>
+          +234 000 000 0000
+        </p>
+
+        <!-- SOCIAL CIRCLES -->
+        <div class="flex gap-4">
+          <div class="w-10 h-10 border border-black/20 rounded-full"></div>
+          <div class="w-10 h-10 border border-black/20 rounded-full"></div>
+          <div class="w-10 h-10 border border-black/20 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- COLLECTIONS -->
+      <div>
+        <h3 class="text-sm tracking-[0.3em] text-black/60 mb-6 uppercase">
+          Collections
+        </h3>
+
+        <ul class="space-y-4 text-black/40 text-sm">
+          <li><a href="#" class="hover:text-[#9CA763] transition">Cakes</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">Cupcakes</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">Pastries</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">Bread</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">Custom Orders</a></li>
+        </ul>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div>
+        <h3 class="text-sm tracking-[0.3em] text-black/60 mb-6 uppercase">
+          Quick Links
+        </h3>
+
+        <ul class="space-y-4 text-black/40 text-sm">
+          <li><a href="#" class="hover:text-[#9CA763] transition">Home</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">About</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">Shop</a></li>
+          <li><a href="#" class="hover:text-[#9CA763] transition">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div>
+        <h3 class="text-sm tracking-[0.3em] text-black/60 mb-6 uppercase">
+          Stay Updated
+        </h3>
+
+        <p class="text-black/40 text-sm mb-6">
+          Get sweet offers and new arrivals.
+        </p>
+
+        <input 
+          type="email" 
+          placeholder="Your email"
+          class="w-full bg-transparent border border-black/20 px-4 py-3 text-sm outline-none mb-4"
+        >
+
+        <button class="w-full bg-[#9CA763] text-black py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition">
+          Subscribe
+        </button>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="border-t border-black/10 pt-8 text-center text-white/40 text-sm">
+      © 2026 Sprinkle Bakery. All rights reserved.
+    </div>
+
+  </div>
+</footer>     
+
+        
+  
+ 
+ 
+  
+
+   
+      
+
+    
+
+<!-- JS -->
+<script>
+lucide.createIcons();
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+  }, 3000);
+});
+
+function toggleMenu() {
+  document.getElementById("mobileMenu")
+  .classList.toggle("translate-x-full");
+}
+
+const dot = document.getElementById("dot");
+const ring = document.getElementById("ring");
+
+let x=0,y=0,rx=0,ry=0;
+
+window.addEventListener("mousemove",(e)=>{
+x=e.clientX;y=e.clientY;
+dot.style.left=x+"px";
+dot.style.top=y+"px";
+});
+
+function animate(){
+rx+=(x-rx)*0.15;
+ry+=(y-ry)*0.15;
+ring.style.left=rx+"px";
+ring.style.top=ry+"px";
+requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+<script>
+function toggleCard(card) {
+  const content = card.querySelector(".text-content");
+
+  // close all others
+  document.querySelectorAll(".text-content").forEach(el => {
+    if (el !== content) {
+      el.classList.remove("opacity-100");
+      el.classList.add("opacity-0");
+      el.classList.add("pointer-events-none");
+    }
+  });
+
+  // toggle current card
+  if (content.classList.contains("opacity-100")) {
+    content.classList.remove("opacity-100");
+    content.classList.add("opacity-0");
+    content.classList.add("pointer-events-none");
+  } else {
+    content.classList.add("opacity-100");
+    content.classList.remove("opacity-0");
+    content.classList.remove("pointer-events-none");
+  }
+}
+</script>
+
+
+
+</body>
+</html>
